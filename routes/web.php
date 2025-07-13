@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileDeExController;
 
 Route::get('/', function () {
     if (\Illuminate\Support\Facades\Auth::check()) {
@@ -30,6 +31,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('supplier/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
     Route::get('supplier/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
     Route::put('/supplier/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
+
+    /*khotiyan routes*/
+    Route::get('/khotiyan',[ProfileDeExController::class,'index'])->name('khotiyan.index');
+    Route::post('/khotiyan',[ProfileDeExController::class,'store'])->name('khotiyan.store');
+    Route::delete('/khotiyan/{id}',[ProfileDeExController::class,'destroy'])->name('khotiyan.destroy');
+    Route::get('/khotiyan/{id}',[ProfileDeExController::class,'edit'])->name('khotiyan.edit');
+    Route::put('/khotiyan/{id}',[ProfileDeExController::class,'update'])->name('khotiyan.update');
 });
 
 Route::middleware('auth')->group(function () {

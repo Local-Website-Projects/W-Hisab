@@ -16,6 +16,11 @@
                     <span class="nav-text">Suppliers</span>
                 </a>
             </li>
+            <li><a class="ai-icon" href="{{route('khotiyan.index')}}" aria-expanded="false">
+                    <i class="flaticon-381-layer-1"></i>
+                    <span class="nav-text">Profile</span>
+                </a>
+            </li>
         </ul>
 
         <div class="copyright">
