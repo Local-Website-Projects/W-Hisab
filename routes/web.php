@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileDeExController;
+use App\Http\Controllers\DebitCreditController;
 
 Route::get('/', function () {
     if (\Illuminate\Support\Facades\Auth::check()) {
@@ -39,11 +40,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/khotiyan/{id}',[ProfileDeExController::class,'update'])->name('khotiyan.update');
 
     /*cashbook routes*/
-    Route::get('/cashbook',[\App\Http\Controllers\DebitCreditController::class,'index'])->name('cashbook.index');
-    Route::post('/cashbook',[\App\Http\Controllers\DebitCreditController::class,'store'])->name('cashbook.store');
-    Route::delete('/cashbook/{id}',[\App\Http\Controllers\DebitCreditController::class,'destroy'])->name('cashbook.destroy');
-    Route::get('/cashbook/{id}',[\App\Http\Controllers\DebitCreditController::class,'edit'])->name('cashbook.edit');
-    Route::put('/cashbook/{debitCredit}',[\App\Http\Controllers\DebitCreditController::class,'update'])->name('cashbook.update');
+    Route::get('/cashbook',[DebitCreditController::class,'index'])->name('cashbook.index');
+    Route::post('/cashbook',[DebitCreditController::class,'store'])->name('cashbook.store');
+    Route::delete('/cashbook/{id}',[DebitCreditController::class,'destroy'])->name('cashbook.destroy');
+    Route::get('/cashbook/{id}',[DebitCreditController::class,'edit'])->name('cashbook.edit');
+    Route::put('/cashbook/{debitCredit}',[DebitCreditController::class,'update'])->name('cashbook.update');
 
     /*Reports routes*/
     Route::get('/report',[ProfileDeExController::class,'report'])->name('report.index');
