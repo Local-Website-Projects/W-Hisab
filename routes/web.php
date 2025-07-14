@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SupplierController;
@@ -14,9 +15,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 
     /*Projects route*/
     Route::get('project', [ProjectController::class, 'index'])->name('project.index');
@@ -38,6 +37,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/khotiyan/{id}',[ProfileDeExController::class,'destroy'])->name('khotiyan.destroy');
     Route::get('/khotiyan/{id}',[ProfileDeExController::class,'edit'])->name('khotiyan.edit');
     Route::put('/khotiyan/{id}',[ProfileDeExController::class,'update'])->name('khotiyan.update');
+
+    /*cashbook routes*/
+    Route::get('/cashbook',[\App\Http\Controllers\DebitCreditController::class,'index'])->name('cashbook.index');
+    Route::post('/cashbook',[\App\Http\Controllers\DebitCreditController::class,'store'])->name('cashbook.store');
+    Route::delete('/cashbook/{id}',[\App\Http\Controllers\DebitCreditController::class,'destroy'])->name('cashbook.destroy');
+    Route::get('/cashbook/{id}',[\App\Http\Controllers\DebitCreditController::class,'edit'])->name('cashbook.edit');
+    Route::put('/cashbook/{debitCredit}',[\App\Http\Controllers\DebitCreditController::class,'update'])->name('cashbook.update');
+
+    /*Reports routes*/
+    Route::get('/report',[ProfileDeExController::class,'report'])->name('report.index');
+
 });
 
 Route::middleware('auth')->group(function () {

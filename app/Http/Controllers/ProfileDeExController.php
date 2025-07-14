@@ -50,4 +50,9 @@ class ProfileDeExController extends Controller
 
         return redirect()->route('khotiyan.index')->with('success', 'Data updated successfully');
     }
+
+    public function report()
+    {
+        return view('reports.index');
+    }
 }

@@ -21,6 +21,16 @@
                     <span class="nav-text">Profile</span>
                 </a>
             </li>
+            <li><a class="ai-icon" href="{{route('cashbook.index')}}" aria-expanded="false">
+                    <i class="flaticon-381-notepad"></i>
+                    <span class="nav-text">Cash Book</span>
+                </a>
+            </li>
+            <li><a class="ai-icon" href="{{route('report.index')}}" aria-expanded="false">
+                    <i class="flaticon-381-settings-2"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+            </li>
         </ul>
 
         <div class="copyright">

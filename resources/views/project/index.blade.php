@@ -79,7 +79,7 @@
                     <div class="col-7">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Exam Toppers</h4>
+                                <h4 class="card-title">Project List</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

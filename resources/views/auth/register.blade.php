@@ -9,6 +9,15 @@
                     <div class="authincation-content">
                         <div class="row no-gutters">
                             <div class="col-xl-12">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <div class="auth-form">
                                     <div class="text-center mb-3">
                                         <h1 class="text-white">Hisab</h1>
@@ -18,11 +27,11 @@
                                         @csrf
                                         <div class="form-group">
                                             <label class="mb-1 text-white"><strong>Name</strong></label>
-                                            <input type="text" class="form-control" name="name" :value="old('name')" required autofocus autocomplete="off">
+                                            <input type="text" class="form-control" name="name" value="{{old('name')}}" required autofocus autocomplete="off">
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1 text-white"><strong>Email</strong></label>
-                                            <input type="email" class="form-control" name="email" :value="old('email')" required autocomplete="off">
+                                            <input type="email" class="form-control" name="email" value="{{old('email')}}" required autocomplete="off">
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1 text-white"><strong>Password</strong></label>
