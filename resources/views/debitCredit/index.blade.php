@@ -170,7 +170,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-responsive-md">
+                                    <table class="table table-bordered table-responsive-md">
                                         <thead>
                                         <tr>
                                             <th>Project Name</th>

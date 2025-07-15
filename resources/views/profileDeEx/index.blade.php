@@ -87,7 +87,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-responsive-md table-bordered">
+                                    <table class="table table-bordered table-responsive-sm">
                                         <thead>
                                         <tr>
                                             <th>Date</th>
