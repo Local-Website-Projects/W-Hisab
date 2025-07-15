@@ -60,7 +60,7 @@
                                         @csrf
                                         <div class="form-group">
                                             <label>Date*</label>
-                                            <input type="date" class="form-control input-default" name="date" required>
+                                            <input type="date" class="form-control input-default" name="date" required value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Note</label>

@@ -93,11 +93,19 @@
                                                 <td>{{$profile->expense_amount}}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a href="{{route('khotiyan.edit',$profile->profile_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                                        <form action="{{ route('khotiyan.destroy', $profile->profile_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this data?');" style="display:inline;">
+                                                        <a href="{{route('khotiyan.edit',$profile->profile_id)}}"
+                                                           class="btn btn-primary shadow btn-xs sharp mr-1"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                        <form
+                                                            action="{{ route('khotiyan.destroy', $profile->profile_id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Are you sure you want to delete this data?');"
+                                                            style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
+                                                            <button type="submit"
+                                                                    class="btn btn-danger shadow btn-xs sharp mr-1"><i
+                                                                    class="fa fa-trash"></i></button>
                                                         </form>
                                                     </div>
 
@@ -114,6 +122,25 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    @foreach($results as $result)
+                        <div class="col-xl-3 col-md-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="media pb-2 border-bottom align-items-center">
+                                        <div class="media-body">
+                                            <h4 class="fs-20">{{$result['project_name']}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3 mt-3">
+											<span class="text-black mr-auto font-w500">
+											Total Credit: {{$result['total_credit']}}<br/>Total Debit: {{$result['total_debit']}}   </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

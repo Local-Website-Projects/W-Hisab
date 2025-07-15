@@ -48,86 +48,117 @@
                             </div>
                         @endif
                     </div>
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Debit Entry</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="basic-form">
-                                    <form action="{{route('cashbook.store')}}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label>Select Project*</label>
-                                            <select class="form-control form-control-lg default-select" name="project_id" required>
-                                                <option disabled selected>Select Project</option>
-                                                @foreach($projects as $project)
-                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
-                                                @endforeach
-                                            </select>
+                    <div class="col-12 mb-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#debitModal">Add Debit Entry</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="debitModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Debit Entry</h5>
+                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="basic-form">
+                                                    <form action="{{route('cashbook.store')}}" method="post">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label>Select Project*</label>
+                                                            <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                                <option disabled selected>Select Project</option>
+                                                                @foreach($projects as $project)
+                                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Select Supplier*</label>
+                                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                                <option disabled selected>Select Supplier</option>
+                                                                @foreach($suppliers as $supplier)
+                                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Amount*</label>
+                                                            <input type="number" class="form-control input-default" name="debit" required>
+                                                        </div>
+                                                        <input type="hidden" value="" name="credit"/>
+                                                        <div class="form-group">
+                                                            <label>Note*</label>
+                                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Select Supplier*</label>
-                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
-                                                <option disabled selected>Select Supplier</option>
-                                                @foreach($suppliers as $supplier)
-                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Amount*</label>
-                                            <input type="number" class="form-control input-default" name="debit" required>
-                                        </div>
-                                        <input type="hidden" value="" name="credit"/>
-                                        <div class="form-group">
-                                            <label>Note*</label>
-                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
-                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Credit Entry</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="basic-form">
-                                    <form action="{{route('cashbook.store')}}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label>Select Project*</label>
-                                            <select class="form-control form-control-lg default-select" name="project_id" required>
-                                                <option disabled selected>Select Project</option>
-                                                @foreach($projects as $project)
-                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
-                                                @endforeach
-                                            </select>
+
+
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#creditModal">Add Credit Entry</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="creditModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Credit Entry</h5>
+                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="basic-form">
+                                                    <form action="{{route('cashbook.store')}}" method="post">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label>Select Project*</label>
+                                                            <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                                <option disabled selected>Select Project</option>
+                                                                @foreach($projects as $project)
+                                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Select Supplier*</label>
+                                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                                <option disabled selected>Select Supplier</option>
+                                                                @foreach($suppliers as $supplier)
+                                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Amount*</label>
+                                                            <input type="number" class="form-control input-default" name="credit" required>
+                                                        </div>
+                                                        <input type="hidden" value="" name="debit"/>
+                                                        <div class="form-group">
+                                                            <label>Note*</label>
+                                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Select Supplier*</label>
-                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
-                                                <option disabled selected>Select Supplier</option>
-                                                @foreach($suppliers as $supplier)
-                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Amount*</label>
-                                            <input type="number" class="form-control input-default" name="credit" required>
-                                        </div>
-                                        <input type="hidden" value="" name="debit"/>
-                                        <div class="form-group">
-                                            <label>Note*</label>
-                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
-                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
