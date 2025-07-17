@@ -37,6 +37,99 @@
                     </ol>
                 </div>
 
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Profile Report</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form action="{{route('report.profile')}}" method="post" target="_blank">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label>Form Date</label>
+                                                <input type="date" class="form-control" name="form">
+                                            </div>
+                                            <div class="col-sm-4 mt-2 mt-sm-0">
+                                                <label>To Date</label>
+                                                <input type="date" class="form-control" name="to">
+                                            </div>
+                                            <div class="col-sm-4 mt-4">
+                                                <button type="submit" class="btn btn-rounded btn-primary mb-2">Report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Project Wise Cashbook Report</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form action="{{route('report.project')}}" method="post" target="_blank">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="form-group">
+                                                    <label>Select Project*</label>
+                                                    <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                        <option disabled selected>Select Project</option>
+                                                        @foreach($projects as $project)
+                                                            <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 mt-4">
+                                                <button type="submit" class="btn btn-rounded btn-primary mb-2">Report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Supplier Wise Cashbook Report</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form action="{{route('report.supplier')}}" method="post" target="_blank">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="form-group">
+                                                    <label>Select Supplier*</label>
+                                                    <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                        <option disabled selected>Select Supplier</option>
+                                                        @foreach($suppliers as $supplier)
+                                                            <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 mt-4">
+                                                <button type="submit" class="btn btn-rounded btn-primary mb-2">Report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
         <!--**********************************
