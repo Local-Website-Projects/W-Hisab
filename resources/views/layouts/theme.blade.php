@@ -9,10 +9,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
 
     <!-- CSS Plugins -->
-    <link href="{{ asset('vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/chartist/css/chartist.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/chartist/css/chartist.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
 
     <!-- Custom Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -37,16 +37,16 @@
 @yield('content')
 
 <!-- Required vendors -->
-<script src="{{asset('vendor/global/global.min.js')}}"></script>
-<script src="{{asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
-<script src="{{asset('vendor/chart.js/Chart.bundle.min.js')}}"></script>
-<script src="{{asset('vendor/owl-carousel/owl.carousel.js')}}"></script>
+<script src="{{asset('vendors/global/global.min.js')}}"></script>
+<script src="{{asset('vendors/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
+<script src="{{asset('vendors/chart.js/Chart.bundle.min.js')}}"></script>
+<script src="{{asset('vendors/owl-carousel/owl.carousel.js')}}"></script>
 
 <!-- Chart Peity Plugin -->
-<script src="{{ asset('vendor/peity/jquery.peity.min.js') }}"></script>
+<script src="{{ asset('vendors/peity/jquery.peity.min.js') }}"></script>
 
 <!-- Apex Chart -->
-<script src="{{ asset('vendor/apexchart/apexchart.js') }}"></script>
+<script src="{{ asset('vendors/apexchart/apexchart.js') }}"></script>
 
 <!-- Dashboard Scripts -->
 <script src="{{ asset('js/dashboard/dashboard-1.js') }}"></script>

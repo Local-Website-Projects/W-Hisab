@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\profile;
+use App\Models\Profile;
 use App\Models\Project;
 use App\Models\Supplier;
 use Carbon\Carbon;

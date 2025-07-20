@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DebitCredits;
-use App\Models\profile;
+use App\Models\Profile;
 use App\Models\Project;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -23,18 +23,18 @@ class ProfileDeExController extends Controller
             'deposit_amount' => 'nullable|numeric',
             'expense_amount' => 'nullable|numeric',
         ]);
-        profile::create($validated);
+        Profile::create($validated);
         return redirect()->route('khotiyan.index')->with('success','Data inserted successfully');
     }
 
     public function destroy($id)
     {
-        profile::where('profile_id',$id)->delete();
+        Profile::where('profile_id',$id)->delete();
         return redirect()->route('khotiyan.index')->with('success','Data deleted successfully');
     }
 
     public function edit($id) {
-        $data = profile::where('profile_id',$id)->findOrFail($id);
+        $data = Profile::where('profile_id',$id)->findOrFail($id);
         return view('profileDeEx.edit',compact('data'));
     }
 
@@ -47,7 +47,7 @@ class ProfileDeExController extends Controller
             'expense_amount' => 'nullable|numeric',
         ]);
 
-        $profile = profile::where('profile_id', $id)->firstOrFail(); // Use profile_id if it's your primary key
+        $profile = Profile::where('profile_id', $id)->firstOrFail(); // Use profile_id if it's your primary key
 
         $profile->update($validated);
 
