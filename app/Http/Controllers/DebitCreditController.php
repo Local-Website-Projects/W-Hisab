@@ -6,6 +6,7 @@ use App\Models\DebitCredits;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DebitCreditController extends Controller
@@ -23,12 +24,13 @@ class DebitCreditController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,project_id',
-            'supplier_id' => 'required|exists:suppliers,supplier_id',
-            'product_id' => 'required|exists:products,product_id',
-            'debit' => 'nullable|numeric|min:0',
-            'credit' => 'nullable|numeric|min:0',
-            'note' => 'required|string'
+            'project_id'   => 'required|exists:projects,project_id',
+            'supplier_id'  => 'nullable|exists:suppliers,supplier_id',
+            'product_id'   => 'nullable|exists:products,product_id',
+            'debit'        => 'nullable|numeric|min:0',
+            'credit'       => 'nullable|numeric|min:0',
+            'note'         => 'required|string',
+            'date'         => 'required|date',
         ]);
         DebitCredits::create($validated);
         return redirect()->route('cashbook.index')->with('success','Debit credit created successfully');
@@ -58,5 +60,24 @@ class DebitCreditController extends Controller
         ]);
         $debitCredit->update($validated);
         return redirect()->route('cashbook.index')->with('success','Debit credit data updated successfully');
+    }
+
+    public function datewiseReport(Request $request)
+    {
+        $request->validate([
+            'form' => 'required|date',
+            'to' => 'required|date|after_or_equal:form',
+        ]);
+
+        $toDateForQuery = Carbon::createFromFormat('Y-m-d', $request->input('to'));
+
+        $fromDate = Carbon::createFromFormat('Y-m-d', $request->input('form'))->startOfDay();
+        $toDate = Carbon::createFromFormat('Y-m-d', $request->input('to'))->endOfDay();
+        $cashbooks = DebitCredits::whereBetween('date', [$fromDate, $toDate])->with('project','supplier','product')->latest()->paginate(20)->onEachSide(1);
+
+        $totalCredit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('credit');
+        $totalDebit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('debit');
+        $cashOnHand = $totalCredit - $totalDebit;
+        return view ('reports.datewise-profile', compact('cashbooks', 'fromDate', 'toDate','cashOnHand'));
     }
 }

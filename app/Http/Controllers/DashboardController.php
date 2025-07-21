@@ -33,13 +33,13 @@ class DashboardController extends Controller
 
 
     public function index(){
-        $todayExpense = DebitCredits::whereDate('created_at', Carbon::today())->sum('debit');
+        $todayExpense = DebitCredits::whereDate('date', Carbon::today())->sum('debit');
         $todayExpense = $this->formatBDT($todayExpense);
-        $todayDeposit = DebitCredits::whereDate('created_at', Carbon::today())->sum('credit');
+        $todayDeposit = DebitCredits::whereDate('date', Carbon::today())->sum('credit');
         $todayDeposit = $this->formatBDT($todayDeposit);
         $projects = Project::where('status', 1)->count();
         $suppliers = Supplier::count();
-        $cashbooks = DebitCredits::with('project','supplier','product')->latest()->paginate(20)->onEachSide(2);
+        $cashbooks = DebitCredits::whereDate('date', Carbon::today())->with('project','supplier','product')->latest()->paginate(20)->onEachSide(2);
         $totalCredit = DebitCredits::sum('credit');
         $totalDebit = DebitCredits::sum('debit');
         $cashOnHand = $totalCredit - $totalDebit;

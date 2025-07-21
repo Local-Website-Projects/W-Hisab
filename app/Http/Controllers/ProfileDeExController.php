@@ -61,20 +61,7 @@ class ProfileDeExController extends Controller
         return view('reports.index',compact('projects','suppliers'));
     }
 
-    public function datewiseReport(Request $request)
-    {
-        $request->validate([
-            'form' => 'required|date',
-            'to' => 'required|date|after_or_equal:form',
-        ]);
 
-        $fromDate = $request->input('form');
-        $toDate = $request->input('to');
-
-        $profiles = Profile::whereBetween('date', [$fromDate, $toDate])->latest()->get();
-
-        return view ('reports.datewise-profile', compact('profiles', 'fromDate', 'toDate'));
-    }
 
     public function projectwiseReport(Request $request)
     {

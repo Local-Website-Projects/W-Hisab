@@ -78,7 +78,7 @@
                                                         <div class="form-group">
                                                             <label>Select Product</label>
                                                             <select class="form-control form-control-lg default-select" name="product_id">
-                                                                <option disabled selected>Select Product</option>
+                                                                <option value="" disabled selected>Select Product</option>
                                                                 @foreach($products as $product)
                                                                     <option value="{{$product->product_id}}">{{$product->product_name}}</option>
                                                                 @endforeach
@@ -87,11 +87,15 @@
                                                         <div class="form-group">
                                                             <label>Select Supplier*</label>
                                                             <select class="form-control form-control-lg default-select" name="supplier_id">
-                                                                <option disabled selected>Select Supplier</option>
+                                                                <option value="" disabled selected>Select Supplier</option>
                                                                 @foreach($suppliers as $supplier)
                                                                     <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Date*</label>
+                                                            <input type="date" class="form-control input-default" name="date" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Amount*</label>
@@ -143,7 +147,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Select Product</label>
-                                                            <select class="form-control form-control-lg default-select" name="product_id">
+                                                            <select class="form-control form-control-lg default-select" name="product_id" required>
                                                                 <option disabled selected>Select Product</option>
                                                                 @foreach($products as $product)
                                                                     <option value="{{$product->product_id}}">{{$product->product_name}}</option>
@@ -152,12 +156,16 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Select Supplier</label>
-                                                            <select class="form-control form-control-lg default-select" name="supplier_id">
+                                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
                                                                 <option disabled selected>Select Supplier</option>
                                                                 @foreach($suppliers as $supplier)
                                                                     <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Date*</label>
+                                                            <input type="date" class="form-control input-default" name="date" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Amount*</label>
@@ -204,8 +212,8 @@
                                         @foreach($cashbooks as $cashbook)
                                             <tr>
                                                 <td>{{$cashbook->project->project_name}}</td>
-                                                <td>{{$cashbook->supplier->supplier_name}}</td>
-                                                <td>{{$cashbook->product->product_name}}</td>
+                                                <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
+                                                <td>{{ optional($cashbook->product)->product_name ?? 'N/A'}}</td>
                                                 <td>{{$cashbook->note}}</td>
                                                 <td>{{$cashbook->credit}}</td>
                                                 <td>{{$cashbook->debit}}</td>
@@ -223,9 +231,8 @@
                                         @endforeach
 
                                         <tr>
-                                            <td colspan="5">Cash On Hand</td>
-                                            <td><b>{{$cashOnHand}}</b></td>
-                                            <td></td>
+                                            <td colspan="4">Cash On Hand</td>
+                                            <td colspan="3"><b>{{$cashOnHand}}</b></td>
                                         </tr>
                                         </tbody>
                                     </table>

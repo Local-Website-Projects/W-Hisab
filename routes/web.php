@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*Reports routes*/
     Route::get('/report',[ProfileDeExController::class,'report'])->name('report.index');
-    Route::post('/reportProfile',[ProfileDeExController::class,'datewiseReport'])->name('report.profile');
+    Route::post('/reportProfile',[DebitCreditController::class,'datewiseReport'])->name('report.cashbook');
     Route::post('/project-report',[ProfileDeExController::class,'projectwiseReport'])->name('report.project');
     Route::post('/supplier-report',[ProfileDeExController::class,'supplierwiseReport'])->name('report.supplier');
 

@@ -14,6 +14,7 @@ class DebitCredits extends Model
         'note',
         'debit',
         'credit',
+        'date'
     ];
 
     public function project(){

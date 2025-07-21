@@ -41,11 +41,11 @@
                     <div class="col-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Profile Report</h4>
+                                <h4 class="card-title">Cash Book Report</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form action="{{route('report.profile')}}" method="post" target="_blank">
+                                    <form action="{{route('report.cashbook')}}" method="post" target="_blank">
                                         @csrf
                                         <div class="row">
                                             <div class="col-sm-4">

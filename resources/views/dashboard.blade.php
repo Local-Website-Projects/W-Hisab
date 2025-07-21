@@ -70,7 +70,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Today Profile Data List</h4>
+                                <h4 class="card-title">Today Cash Book</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -90,8 +90,8 @@
                                         @foreach($cashbooks as $cashbook)
                                             <tr>
                                                 <td>{{$cashbook->project->project_name}}</td>
-                                                <td>{{$cashbook->supplier->supplier_name}}</td>
-                                                <td>{{$cashbook->product->product_name}}</td>
+                                                <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
+                                                <td>{{ optional($cashbook->product)->product_name ?? 'N/A'}}</td>
                                                 <td>{{$cashbook->note}}</td>
                                                 <td>{{$cashbook->credit}}</td>
                                                 <td>{{$cashbook->debit}}</td>
