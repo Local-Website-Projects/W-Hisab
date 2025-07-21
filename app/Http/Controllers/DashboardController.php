@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DebitCredits;
 use App\Models\Profile;
 use App\Models\Project;
 use App\Models\Supplier;
@@ -32,13 +33,17 @@ class DashboardController extends Controller
 
 
     public function index(){
-        $todayExpense = Profile::whereDate('date', Carbon::today())->sum('expense_amount');
+        $todayExpense = DebitCredits::whereDate('created_at', Carbon::today())->sum('debit');
         $todayExpense = $this->formatBDT($todayExpense);
-        $todayDeposit = Profile::whereDate('date', Carbon::today())->sum('deposit_amount');
+        $todayDeposit = DebitCredits::whereDate('created_at', Carbon::today())->sum('credit');
         $todayDeposit = $this->formatBDT($todayDeposit);
         $projects = Project::where('status', 1)->count();
         $suppliers = Supplier::count();
-        $profiles = profile::where('date', Carbon::today())->latest()->paginate(10);
+        $cashbooks = DebitCredits::with('project','supplier','product')->latest()->paginate(20)->onEachSide(2);
+        $totalCredit = DebitCredits::sum('credit');
+        $totalDebit = DebitCredits::sum('debit');
+        $cashOnHand = $totalCredit - $totalDebit;
+        $cashOnHand = $this->formatBDT($cashOnHand);
         $rawResults = DB::table('projects')
             ->join('debit_credits', 'projects.project_id', '=', 'debit_credits.project_id')
             ->select(
@@ -58,6 +63,6 @@ class DashboardController extends Controller
                 'total_credit'  => $this->formatBDT($item->total_credit),
             ];
         });
-        return view('dashboard',compact('todayExpense','todayDeposit','projects','suppliers','profiles','results'));
+        return view('dashboard',compact('todayExpense','todayDeposit','projects','suppliers','cashbooks','results','cashOnHand'));
     }
 }

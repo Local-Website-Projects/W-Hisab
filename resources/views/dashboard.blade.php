@@ -36,8 +36,8 @@
                     <div class="col-xl-3 col-xxl-4 col-md-4 col-6">
                         <div class="card">
                             <div class="card-body">
-                                <p class="text-black mb-0">Today Expense</p>
-                                <span class="fs-28 text-black font-w600 d-block">{{$todayExpense}}</span>
+                                <p class="text-black mb-0">Cash In Hand</p>
+                                <span class="fs-28 text-black font-w600 d-block">{{$cashOnHand}}</span>
                             </div>
                         </div>
                     </div>
@@ -52,8 +52,8 @@
                     <div class="col-xl-3 col-xxl-4 col-md-4 col-6">
                         <div class="card">
                             <div class="card-body">
-                                <p class="text-black mb-0">Running Projects</p>
-                                <span class="fs-28 text-black font-w600 d-block">{{$projects}}</span>
+                                <p class="text-black mb-0">Today Expense</p>
+                                <span class="fs-28 text-black font-w600 d-block">{{$todayExpense}}</span>
                             </div>
                         </div>
                     </div>
@@ -77,38 +77,33 @@
                                     <table class="table table-responsive-md table-bordered">
                                         <thead>
                                         <tr>
-                                            <th>Date</th>
+                                            <th>Project Name</th>
+                                            <th>Supplier Name</th>
+                                            <th>Product Name</th>
                                             <th>Note</th>
-                                            <th>Deposit Amount</th>
-                                            <th>Expense Amount</th>
+                                            <th>Credit</th>
+                                            <th>Debit</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($profiles as $profile)
+                                        @foreach($cashbooks as $cashbook)
                                             <tr>
-                                                <td>{{ \Carbon\Carbon::parse($profile->date)->format('d M Y') }}</td>
-                                                <td>{{$profile->note}}</td>
-                                                <td>{{$profile->deposit_amount}}</td>
-                                                <td>{{$profile->expense_amount}}</td>
+                                                <td>{{$cashbook->project->project_name}}</td>
+                                                <td>{{$cashbook->supplier->supplier_name}}</td>
+                                                <td>{{$cashbook->product->product_name}}</td>
+                                                <td>{{$cashbook->note}}</td>
+                                                <td>{{$cashbook->credit}}</td>
+                                                <td>{{$cashbook->debit}}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a href="{{route('khotiyan.edit',$profile->profile_id)}}"
-                                                           class="btn btn-primary shadow btn-xs sharp mr-1"><i
-                                                                class="fa fa-pencil"></i></a>
-                                                        <form
-                                                            action="{{ route('khotiyan.destroy', $profile->profile_id) }}"
-                                                            method="POST"
-                                                            onsubmit="return confirm('Are you sure you want to delete this data?');"
-                                                            style="display:inline;">
+                                                        <a href="{{route('cashbook.edit',$cashbook->debit_credit_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
+                                                        <form action="{{ route('cashbook.destroy', $cashbook->debit_credit_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this data?');" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit"
-                                                                    class="btn btn-danger shadow btn-xs sharp mr-1"><i
-                                                                    class="fa fa-trash"></i></button>
+                                                            <button type="submit" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
                                                         </form>
                                                     </div>
-
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -116,7 +111,7 @@
                                     </table>
 
                                     <div class="d-flex justify-content-center mt-4">
-                                        {{ $profiles->links() }}
+                                        {{ $cashbooks->links() }}
                                     </div>
                                 </div>
                             </div>
