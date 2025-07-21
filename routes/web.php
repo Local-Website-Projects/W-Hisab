@@ -7,6 +7,7 @@ use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileDeExController;
 use App\Http\Controllers\DebitCreditController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     if (\Illuminate\Support\Facades\Auth::check()) {
@@ -51,6 +52,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/reportProfile',[ProfileDeExController::class,'datewiseReport'])->name('report.profile');
     Route::post('/project-report',[ProfileDeExController::class,'projectwiseReport'])->name('report.project');
     Route::post('/supplier-report',[ProfileDeExController::class,'supplierwiseReport'])->name('report.supplier');
+
+
+    /*products routes*/
+    Route::get('/product',[ProductController::class,'index'])->name('product.index');
+    Route::post('/product',[ProductController::class,'store'])->name('product.store');
+    Route::get('/product/{id}',[ProductController::class,'edit'])->name('product.edit');
+    Route::put('/product/{id}',[ProductController::class,'update'])->name('product.update');
+    Route::delete('/product/{id}',[ProductController::class,'destroy'])->name('product.destroy');
 
 });
 

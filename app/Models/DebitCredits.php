@@ -10,6 +10,7 @@ class DebitCredits extends Model
     protected $fillable = [
         'project_id',
         'supplier_id',
+        'product_id',
         'note',
         'debit',
         'credit',
@@ -21,6 +22,11 @@ class DebitCredits extends Model
 
     public function supplier(){
         return $this->belongsTo('App\Models\Supplier', 'supplier_id', 'supplier_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product', 'product_id', 'product_id');
     }
 
 

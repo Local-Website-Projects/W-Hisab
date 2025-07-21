@@ -49,65 +49,8 @@
                         @endif
                     </div>
                     <div class="col-12 mb-3">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#debitModal">Add Debit Entry</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="debitModal">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Add Debit Entry</h5>
-                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="card">
-                                            <div class="card-body p-0">
-                                                <div class="basic-form">
-                                                    <form action="{{route('cashbook.store')}}" method="post">
-                                                        @csrf
-                                                        <div class="form-group">
-                                                            <label>Select Project*</label>
-                                                            <select class="form-control form-control-lg default-select" name="project_id" required>
-                                                                <option disabled selected>Select Project</option>
-                                                                @foreach($projects as $project)
-                                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Select Supplier*</label>
-                                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
-                                                                <option disabled selected>Select Supplier</option>
-                                                                @foreach($suppliers as $supplier)
-                                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Amount*</label>
-                                                            <input type="number" class="form-control input-default" name="debit" required>
-                                                        </div>
-                                                        <input type="hidden" value="" name="credit"/>
-                                                        <div class="form-group">
-                                                            <label>Note*</label>
-                                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-
-                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#creditModal">Add Credit Entry</button>
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#creditModal">Add Credit Entry / জমা</button>
                         <!-- Modal -->
                         <div class="modal fade" id="creditModal">
                             <div class="modal-dialog" role="document">
@@ -133,8 +76,17 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
+                                                            <label>Select Product</label>
+                                                            <select class="form-control form-control-lg default-select" name="product_id">
+                                                                <option disabled selected>Select Product</option>
+                                                                @foreach($products as $product)
+                                                                    <option value="{{$product->product_id}}">{{$product->product_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label>Select Supplier*</label>
-                                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                            <select class="form-control form-control-lg default-select" name="supplier_id">
                                                                 <option disabled selected>Select Supplier</option>
                                                                 @foreach($suppliers as $supplier)
                                                                     <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
@@ -146,6 +98,72 @@
                                                             <input type="number" class="form-control input-default" name="credit" required>
                                                         </div>
                                                         <input type="hidden" value="" name="debit"/>
+                                                        <div class="form-group">
+                                                            <label>Note*</label>
+                                                            <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-rounded btn-outline-primary">Add</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#debitModal">Add Debit Entry / খরচ</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="debitModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Debit Entry</h5>
+                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="basic-form">
+                                                    <form action="{{route('cashbook.store')}}" method="post">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label>Select Project*</label>
+                                                            <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                                <option disabled selected>Select Project</option>
+                                                                @foreach($projects as $project)
+                                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Select Product</label>
+                                                            <select class="form-control form-control-lg default-select" name="product_id">
+                                                                <option disabled selected>Select Product</option>
+                                                                @foreach($products as $product)
+                                                                    <option value="{{$product->product_id}}">{{$product->product_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Select Supplier</label>
+                                                            <select class="form-control form-control-lg default-select" name="supplier_id">
+                                                                <option disabled selected>Select Supplier</option>
+                                                                @foreach($suppliers as $supplier)
+                                                                    <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Amount*</label>
+                                                            <input type="number" class="form-control input-default" name="debit" required>
+                                                        </div>
+                                                        <input type="hidden" value="" name="credit"/>
                                                         <div class="form-group">
                                                             <label>Note*</label>
                                                             <textarea class="form-control" rows="4" id="comment" name="note" required></textarea>
@@ -175,9 +193,10 @@
                                         <tr>
                                             <th>Project Name</th>
                                             <th>Supplier Name</th>
+                                            <th>Product Name</th>
                                             <th>Note</th>
-                                            <th>Debit</th>
                                             <th>Credit</th>
+                                            <th>Debit</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -186,9 +205,10 @@
                                             <tr>
                                                 <td>{{$cashbook->project->project_name}}</td>
                                                 <td>{{$cashbook->supplier->supplier_name}}</td>
+                                                <td>{{$cashbook->product->product_name}}</td>
                                                 <td>{{$cashbook->note}}</td>
-                                                <td>{{$cashbook->debit}}</td>
                                                 <td>{{$cashbook->credit}}</td>
+                                                <td>{{$cashbook->debit}}</td>
                                                 <td>
                                                     <div class="d-flex">
                                                         <a href="{{route('cashbook.edit',$cashbook->debit_credit_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
@@ -201,6 +221,12 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+
+                                        <tr>
+                                            <td colspan="5">Cash On Hand</td>
+                                            <td><b>{{$cashOnHand}}</b></td>
+                                            <td></td>
+                                        </tr>
                                         </tbody>
                                     </table>
 
