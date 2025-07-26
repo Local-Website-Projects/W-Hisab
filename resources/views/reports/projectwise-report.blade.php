@@ -27,6 +27,7 @@
     <thead class="table-dark">
     <tr>
         <th>#</th>
+        <th>Product Name</th>
         <th>Supplier Name</th>
         <th>Credit</th>
         <th>Debit</th>
@@ -40,6 +41,7 @@
     @forelse($cashbooks as $index => $cashbook)
         <tr>
             <td>{{ $index + 1 }}</td>
+            <td>{{ optional ($cashbook->product)->product_name ?? 'N/A' }}</td>
             <td>{{ optional ($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
             <td>{{ $cashbook->total_credit }}</td>
             <td>{{ $cashbook->total_debit }}</td>
@@ -55,7 +57,7 @@
         </tr>
     @endforelse
     <tr>
-        <td colspan="2">Total</td>
+        <td colspan="3">Total</td>
         <td>{{$total_credit}}</td>
         <td>{{$total_debit}}</td>
     </tr>

@@ -27,7 +27,9 @@
     <thead class="table-dark">
     <tr>
         <th>#</th>
+        <th>Date</th>
         <th>Project Name</th>
+        <th>Product Name</th>
         <th>Debit</th>
         <th>Credit</th>
     </tr>
@@ -40,12 +42,14 @@
     @forelse($cashbooks as $index => $cashbook)
         <tr>
             <td>{{ $index + 1 }}</td>
+            <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d M, Y') }}</td>
             <td>{{ $cashbook->project->project_name }}</td>
-            <td>{{ $cashbook->total_debit }}</td>
-            <td>{{ $cashbook->total_credit }}</td>
+            <td>{{ optional($cashbook->product)->product_name ?? 'N/A' }}</td>
+            <td>{{ $cashbook->debit }}</td>
+            <td>{{ $cashbook->credit }}</td>
             @php
-                $total_debit += $cashbook->total_debit;
-                $total_credit += $cashbook->total_credit;
+                $total_debit += $cashbook->debit;
+                $total_credit += $cashbook->credit;
             @endphp
 
         </tr>
@@ -55,7 +59,7 @@
         </tr>
     @endforelse
     <tr>
-        <td colspan="2">Total</td>
+        <td colspan="4">Total</td>
         <td>{{$total_debit}}</td>
         <td>{{$total_credit}}</td>
     </tr>

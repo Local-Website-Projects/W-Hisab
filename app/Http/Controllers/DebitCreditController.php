@@ -80,4 +80,37 @@ class DebitCreditController extends Controller
         $cashOnHand = $totalCredit - $totalDebit;
         return view ('reports.datewise-profile', compact('cashbooks', 'fromDate', 'toDate','cashOnHand'));
     }
+
+    public function projectwiseReport(Request $request)
+    {
+        $request->validate([
+            'project_id' => 'required|exists:projects,project_id'
+        ]);
+
+        $projectId = $request->input('project_id');
+
+        $cashbooks = DebitCredits::select('supplier_id','product_id')
+            ->selectRaw('SUM(debit) as total_debit')
+            ->selectRaw('SUM(credit) as total_credit')
+            ->where('project_id', $projectId)
+            ->groupBy('supplier_id','product_id')
+            ->with('supplier')
+            ->get();
+        $project = Project::where('project_id', $projectId)->first();
+        return view('reports.projectwise-report', compact('cashbooks','project'));
+    }
+
+    public function supplierwiseReport(Request $request){
+        $request->validate([
+            'supplier_id' => 'required|exists:suppliers,supplier_id'
+        ]);
+
+        $supplierId = $request->input('supplier_id');
+
+        $cashbooks = DebitCredits::where('supplier_id', $supplierId)
+            ->with('project', 'product')
+            ->get();
+        $supplier = Supplier::where('supplier_id', $supplierId)->first();
+        return view('reports.supplierwise-report', compact('cashbooks','supplier'));
+    }
 }
