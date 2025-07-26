@@ -69,7 +69,7 @@ class DebitCreditController extends Controller
             'to' => 'required|date|after_or_equal:form',
         ]);
 
-        $toDateForQuery = Carbon::createFromFormat('Y-m-d', $request->input('to'));
+        $toDateForQuery = Carbon::createFromFormat('Y-m-d', $request->input('form'));
 
         $fromDate = Carbon::createFromFormat('Y-m-d', $request->input('form'))->startOfDay();
         $toDate = Carbon::createFromFormat('Y-m-d', $request->input('to'))->endOfDay();

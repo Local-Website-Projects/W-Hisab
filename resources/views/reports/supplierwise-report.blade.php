@@ -10,6 +10,9 @@
                 display: none !important;
             }
         }
+        *{
+            font-size:12px !important;
+        }
     </style>
 </head>
 <body class="p-4">

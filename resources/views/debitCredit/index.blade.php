@@ -231,7 +231,7 @@
                                         @endforeach
 
                                         <tr>
-                                            <td colspan="4">Cash On Hand</td>
+                                            <td colspan="4">Cash In Hand</td>
                                             <td colspan="3"><b>{{$cashOnHand}}</b></td>
                                         </tr>
                                         </tbody>
