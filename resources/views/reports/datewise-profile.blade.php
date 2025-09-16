@@ -53,7 +53,7 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d M, Y') }}</td>
             <td>{{ $cashbook->project->project_name }}</td>
-            <td>{{  optional($cashbook->product)->product_name ?? 'N/A' }}</td>
+            <td>{{ optional($cashbook->product)->product_name ?? 'N/A' }}</td>
             <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A'}}</td>
             <td>{{ $cashbook->note }}</td>
             <td>{{ $cashbook->credit }}</td>

@@ -73,7 +73,7 @@ class DebitCreditController extends Controller
 
         $fromDate = Carbon::createFromFormat('Y-m-d', $request->input('form'))->startOfDay();
         $toDate = Carbon::createFromFormat('Y-m-d', $request->input('to'))->endOfDay();
-        $cashbooks = DebitCredits::whereBetween('date', [$fromDate, $toDate])->with('project','supplier','product')->latest()->paginate(20)->onEachSide(1);
+        $cashbooks = DebitCredits::whereBetween('date', [$fromDate, $toDate])->with('project','supplier','product')->get();
 
         $totalCredit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('credit');
         $totalDebit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('debit');

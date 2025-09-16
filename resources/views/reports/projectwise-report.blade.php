@@ -29,6 +29,7 @@
         <th>#</th>
         <th>Product Name</th>
         <th>Supplier Name</th>
+        <th>Note</th>
         <th>Credit</th>
         <th>Debit</th>
     </tr>
@@ -43,8 +44,10 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ optional ($cashbook->product)->product_name ?? 'N/A' }}</td>
             <td>{{ optional ($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
+            <td>{{ $cashbook->note }}</td>
             <td>{{ $cashbook->total_credit }}</td>
             <td>{{ $cashbook->total_debit }}</td>
+
             @php
                 $total_debit += $cashbook->total_debit;
                 $total_credit += $cashbook->total_credit;
@@ -57,7 +60,7 @@
         </tr>
     @endforelse
     <tr>
-        <td colspan="3">Total</td>
+        <td colspan="4">Total</td>
         <td>{{$total_credit}}</td>
         <td>{{$total_debit}}</td>
     </tr>

@@ -30,6 +30,7 @@
         <th>Date</th>
         <th>Project Name</th>
         <th>Product Name</th>
+        <th>Note</th>
         <th>Debit</th>
         <th>Credit</th>
     </tr>
@@ -45,6 +46,7 @@
             <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d M, Y') }}</td>
             <td>{{ $cashbook->project->project_name }}</td>
             <td>{{ optional($cashbook->product)->product_name ?? 'N/A' }}</td>
+            <td>{{$cashbook->note}}</td>
             <td>{{ $cashbook->debit }}</td>
             <td>{{ $cashbook->credit }}</td>
             @php
@@ -55,11 +57,11 @@
         </tr>
     @empty
         <tr>
-            <td colspan="4" class="text-center">No data found for selected date range.</td>
+            <td colspan="5" class="text-center">No data found for selected date range.</td>
         </tr>
     @endforelse
     <tr>
-        <td colspan="4">Total</td>
+        <td colspan="5">Total</td>
         <td>{{$total_debit}}</td>
         <td>{{$total_credit}}</td>
     </tr>
