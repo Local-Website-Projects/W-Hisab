@@ -17,6 +17,7 @@ class SupplierController extends Controller
     {
         $validate = $request->validate([
            'supplier_name' => 'required|string',
+           'supplier_type' => 'required|string',
            'supplier_phone' => 'required|string',
            'supplier_address' => 'nullable|string',
            'note' => 'nullable|string',
@@ -40,6 +41,7 @@ class SupplierController extends Controller
     {
         $validated = $request->validate([
             'supplier_name' => 'required|string',
+            'supplier_type' => 'required|string',
             'supplier_phone' => 'required|string',
             'supplier_address' => 'nullable|string',
             'note' => 'nullable|string',

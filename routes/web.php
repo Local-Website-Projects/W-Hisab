@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileDeExController;
 use App\Http\Controllers\DebitCreditController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\FlatSellController;
+use App\Http\Controllers\Product_purchase;
 
 Route::get('/', function () {
     if (\Illuminate\Support\Facades\Auth::check()) {
@@ -27,11 +29,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/project/{project}', [ProjectController::class, 'update'])->name('project.update');
 
     /*Supplier route*/
-    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index');
-    Route::post('supplier', [SupplierController::class, 'store'])->name('supplier.store');
-    Route::delete('supplier/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
-    Route::get('supplier/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
-    Route::put('/supplier/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::get('/supplier-purchaser', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::delete('/supplier/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+    Route::get('/supplier/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
+    Route::put('/supplier-purchaser/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
 
     /*khotiyan routes*/
     Route::get('/khotiyan',[ProfileDeExController::class,'index'])->name('khotiyan.index');
@@ -60,6 +62,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/product/{id}',[ProductController::class,'edit'])->name('product.edit');
     Route::put('/product/{id}',[ProductController::class,'update'])->name('product.update');
     Route::delete('/product/{id}',[ProductController::class,'destroy'])->name('product.destroy');
+
+
+    /*flat sell routes*/
+    Route::get('/flatSale',[FlatSellController::class,'index'])->name('flat-sell.index');
+    Route::post('/flatSale',[FlatSellController::class,'store'])->name('flat-sell.store');
+    Route::get('/flatSale/{id}',[FlatSellController::class,'edit'])->name('flat-sell.edit');
+    Route::put('/flatSale/{id}',[FlatSellController::class,'update'])->name('flat-sell.update');
+    Route::delete('/flatSale/{id}',[FlatSellController::class,'destroy'])->name('flat-sell.destroy');
+
+    /*product purchase routes*/
+    Route::get('/purchase-product',[Product_purchase::class, 'index'])->name('purchase-product.index');
+    Route::post('/purchase-product',[Product_purchase::class, 'store'])->name('purchase-product.store');
+    Route::get('/purchase-product/{purchase_id}',[Product_purchase::class, 'edit'])->name('purchase-product.edit');
+    Route::put('/purchase-product/{purchase_id}',[Product_purchase::class, 'update'])->name('purchase-product.update');
+    Route::delete('/purchase-product/{purchase_id}',[Product_purchase::class, 'destroy'])->name('purchase-product.destroy');
+
 
 });
 

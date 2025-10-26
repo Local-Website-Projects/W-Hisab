@@ -33,7 +33,7 @@
             <div class="container-fluid">
                 <div class="page-titles">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Suppliers</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Flat Sale</a></li>
                     </ol>
                 </div>
                 <div class="row">
@@ -52,30 +52,35 @@
                     <div class="col-5">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add New Purchaser/Supplier</h4>
+                                <h4 class="card-title">Add New Flat Sale Data</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form action="{{route('supplier.store')}}" method="post">
+                                    <form action="{{route('flat-sell.store')}}" method="post">
                                         @csrf
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Name*</label>
-                                            <input type="text" class="form-control input-default" placeholder="name" name="supplier_name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Type*</label>
-                                            <select class="form-control form-control-lg default-select" name="supplier_type" required>
-                                                <option value="Purchaser">Purchaser</option>
-                                                <option value="Supplier">Supplier</option>
+                                            <label>Select Purchaser*</label>
+                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                @foreach($purchasers as $pur)
+                                                    <option value="{{$pur->supplier_id}}">{{$pur->supplier_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Phone No*</label>
-                                            <input type="text" class="form-control input-default" placeholder="phone number" name="supplier_phone" required>
+                                            <label>Select Project*</label>
+                                            <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                @foreach($projects as $project)
+                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Address</label>
-                                            <input type="text" class="form-control input-default" placeholder="address" name="supplier_address">
+                                            <label>Amount</label>
+                                            <input type="number" class="form-control input-default" placeholder="amount" name="total_amount" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input type="date" class="form-control input-default" name="date">
                                         </div>
                                         <div class="form-group">
                                             <label>Note</label>
@@ -97,26 +102,26 @@
                                     <table class="table table-responsive-md">
                                         <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Phone No</th>
-                                            <th>Address</th>
+                                            <th>Purchaser Name</th>
+                                            <th>Project Name</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
                                             <th>Note</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($suppliers as $supplier)
+                                        @foreach($flatSells as $flat)
                                             <tr>
-                                                <td>{{$supplier->supplier_name}}</td>
-                                                <td>{{$supplier->supplier_type}}</td>
-                                                <td>{{$supplier->supplier_phone}}</td>
-                                                <td>{{$supplier->supplier_address}}</td>
-                                                <td>{{$supplier->note}}</td>
+                                                <td>{{$flat->supplier->supplier_name}}</td>
+                                                <td>{{$flat->project->project_name}}</td>
+                                                <td>{{$flat->total_amount}}</td>
+                                                <td>{{$flat->date}}</td>
+                                                <td>{{$flat->note}}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a href="{{route('supplier.edit',$supplier->supplier_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                                        <form action="{{ route('supplier.destroy', $supplier->supplier_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?');" style="display:inline;">
+                                                        <a href="{{route('flat-sell.edit',$flat->flat_sell_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
+                                                        <form action="{{ route('flat-sell.destroy', $flat->flat_sell_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this flat sell data?');" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
@@ -130,7 +135,7 @@
                                     </table>
 
                                     <div class="d-flex justify-content-center mt-4">
-                                        {{ $suppliers->links() }}
+                                        {{ $flatSells->links() }}
                                     </div>
                                 </div>
                             </div>

@@ -33,7 +33,7 @@
             <div class="container-fluid">
                 <div class="page-titles">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Suppliers</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Purchase Product</a></li>
                     </ol>
                 </div>
                 <div class="row">
@@ -52,30 +52,51 @@
                     <div class="col-5">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add New Purchaser/Supplier</h4>
+                                <h4 class="card-title">Add new product purchase data.</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form action="{{route('supplier.store')}}" method="post">
+                                    <form action="{{route('purchase-product.store')}}" method="post">
                                         @csrf
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Name*</label>
-                                            <input type="text" class="form-control input-default" placeholder="name" name="supplier_name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Type*</label>
-                                            <select class="form-control form-control-lg default-select" name="supplier_type" required>
-                                                <option value="Purchaser">Purchaser</option>
-                                                <option value="Supplier">Supplier</option>
+                                            <label>Select Seller*</label>
+                                            <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                @foreach($suppliers as $seller)
+                                                    <option value="{{$seller->supplier_id}}">{{$seller->supplier_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Phone No*</label>
-                                            <input type="text" class="form-control input-default" placeholder="phone number" name="supplier_phone" required>
+                                            <label>Select Project*</label>
+                                            <select class="form-control form-control-lg default-select" name="project_id" required>
+                                                @foreach($projects as $project)
+                                                    <option value="{{$project->project_id}}">{{$project->project_name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Purchaser/Supplier Address</label>
-                                            <input type="text" class="form-control input-default" placeholder="address" name="supplier_address">
+                                            <label>Select Product*</label>
+                                            <select class="form-control form-control-lg default-select" name="product_id" required>
+                                                @foreach($products as $product)
+                                                    <option value="{{$product->product_id}}">{{$product->product_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Quantity</label>
+                                            <input type="text" class="form-control input-default" placeholder="quantity" name="quantity" id="quantity" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Unit</label>
+                                            <input type="text" class="form-control input-default" placeholder="unit" name="unit" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Unit Price</label>
+                                            <input type="text" class="form-control input-default" placeholder="price" name="unit_price" id="unit_price" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Total Price</label>
+                                            <input type="text" class="form-control input-default" placeholder="total price" name="total_price" id="total_price" required readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Note</label>
@@ -90,33 +111,37 @@
                     <div class="col-7">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Suppliers List</h4>
+                                <h4 class="card-title">Product Purchase List</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-responsive-md">
                                         <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Phone No</th>
-                                            <th>Address</th>
+                                            <th>Project</th>
+                                            <th>Supplier Name</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total Price</th>
                                             <th>Note</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($suppliers as $supplier)
+                                        @foreach($purchases as $purchase)
                                             <tr>
-                                                <td>{{$supplier->supplier_name}}</td>
-                                                <td>{{$supplier->supplier_type}}</td>
-                                                <td>{{$supplier->supplier_phone}}</td>
-                                                <td>{{$supplier->supplier_address}}</td>
-                                                <td>{{$supplier->note}}</td>
+                                                <td>{{$purchase->project->project_name}}</td>
+                                                <td>{{$purchase->supplier->supplier_name}}</td>
+                                                <td>{{$purchase->product->product_name}}</td>
+                                                <td>{{$purchase->quantity}} {{$purchase->unit}}</td>
+                                                <td>{{$purchase->unit_price}}</td>
+                                                <td>{{$purchase->total_price}}</td>
+                                                <td>{{$purchase->note}}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a href="{{route('supplier.edit',$supplier->supplier_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                                        <form action="{{ route('supplier.destroy', $supplier->supplier_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?');" style="display:inline;">
+                                                        <a href="{{route('purchase-product.edit',$purchase->product_purchase_id)}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
+                                                        <form action="{{ route('purchase-product.destroy', $purchase->product_purchase_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this purchase data?');" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger shadow btn-xs sharp mr-1"><i class="fa fa-trash"></i></button>
@@ -130,7 +155,7 @@
                                     </table>
 
                                     <div class="d-flex justify-content-center mt-4">
-                                        {{ $suppliers->links() }}
+                                        {{ $purchases->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -153,4 +178,14 @@
         ***********************************-->
 
     </div>
+    <script>
+        function calculateTotal() {
+            let qty = parseFloat(document.getElementById('quantity').value) || 0;
+            let price = parseFloat(document.getElementById('unit_price').value) || 0;
+            document.getElementById('total_price').value = qty * price;
+        }
+
+        document.getElementById('quantity').addEventListener('input', calculateTotal);
+        document.getElementById('unit_price').addEventListener('input', calculateTotal);
+    </script>
 @endsection
