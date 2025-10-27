@@ -57,7 +57,8 @@ class ProfileDeExController extends Controller
     public function report()
     {
         $projects = Project::latest()->get();
-        $suppliers = Supplier::latest()->get();
-        return view('reports.index',compact('projects','suppliers'));
+        $suppliers = Supplier::where('supplier_type','Supplier')->latest()->get();
+        $purchasers = Supplier::where('supplier_type','Purchaser')->latest()->get();
+        return view('reports.index',compact('projects','suppliers','purchasers'));
     }
 }

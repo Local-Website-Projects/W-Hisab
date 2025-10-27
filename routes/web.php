@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/reportProfile',[DebitCreditController::class,'datewiseReport'])->name('report.cashbook');
     Route::post('/project-report',[DebitCreditController::class,'projectwiseReport'])->name('report.project');
     Route::post('/supplier-report',[DebitCreditController::class,'supplierwiseReport'])->name('report.supplier');
+    Route::post('/purchaser-report',[DebitCreditController::class,'purchaserReport'])->name('report.purchaser');
 
 
     /*products routes*/

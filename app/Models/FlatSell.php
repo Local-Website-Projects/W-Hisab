@@ -23,4 +23,9 @@ class FlatSell extends Model
     public function project() {
         return $this->belongsTo(Project::class, 'project_id', 'project_id');
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
 }

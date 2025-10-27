@@ -66,20 +66,38 @@ class DebitCreditController extends Controller
     {
         $request->validate([
             'form' => 'required|date',
-            'to' => 'required|date|after_or_equal:form',
+            'to'   => 'required|date|after_or_equal:form',
         ]);
 
-        $toDateForQuery = Carbon::createFromFormat('Y-m-d', $request->input('form'));
-
         $fromDate = Carbon::createFromFormat('Y-m-d', $request->input('form'))->startOfDay();
-        $toDate = Carbon::createFromFormat('Y-m-d', $request->input('to'))->endOfDay();
-        $cashbooks = DebitCredits::whereBetween('date', [$fromDate, $toDate])->with('project','supplier','product')->get();
+        $toDate   = Carbon::createFromFormat('Y-m-d', $request->input('to'))->endOfDay();
 
-        $totalCredit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('credit');
-        $totalDebit = DebitCredits::whereDate('date', '<', $toDateForQuery)->sum('debit');
-        $cashOnHand = $totalCredit - $totalDebit;
-        return view ('reports.datewise-profile', compact('cashbooks', 'fromDate', 'toDate','cashOnHand'));
+        // Data to display in table (within the selected range)
+        $cashbooks = DebitCredits::whereBetween('date', [
+            $fromDate->toDateString(),
+            $toDate->toDateString()
+        ])
+            ->with('project', 'supplier', 'product')
+            ->orderBy('date')
+            ->get();
+
+        // Opening Balance (before from date)
+        $openingCredit = DebitCredits::whereDate('date', '<', $fromDate->toDateString())->sum('credit');
+        $openingDebit  = DebitCredits::whereDate('date', '<', $fromDate->toDateString())->sum('debit');
+        $openingBalance = (float)$openingCredit - (float)$openingDebit;
+
+        // Period totals
+        $periodCredit = $cashbooks->sum('credit');
+        $periodDebit  = $cashbooks->sum('debit');
+
+        // Closing Cash on Hand
+        $cashOnHand = $openingBalance + ($periodCredit - $periodDebit);
+
+        return view('reports.datewise-profile', compact(
+            'cashbooks', 'fromDate', 'toDate', 'openingBalance', 'cashOnHand'
+        ));
     }
+
 
     public function projectwiseReport(Request $request)
     {
@@ -107,10 +125,29 @@ class DebitCreditController extends Controller
 
         $supplierId = $request->input('supplier_id');
 
-        $cashbooks = DebitCredits::where('supplier_id', $supplierId)
-            ->with('project', 'product')
-            ->get();
-        $supplier = Supplier::where('supplier_id', $supplierId)->first();
-        return view('reports.supplierwise-report', compact('cashbooks','supplier'));
+        $supplier = Supplier::with([
+            'purchases.product',
+            'payments.product'
+        ])->where('supplier_id', $request->supplier_id)->firstOrFail();
+        $name = Supplier::where('supplier_id', $supplierId)->first();
+        return view('reports.supplierwise-report', compact('name','supplier'));
+    }
+
+    public function purchaserReport(Request $request)
+    {
+        $request->validate([
+            'supplier_id' => 'required|exists:suppliers,supplier_id'
+        ]);
+
+        $supplierId = $request->input('supplier_id');
+
+        $supplier = Supplier::with([
+            'flatsell.project', // Each flat purchase belongsTo a project
+            'payments.project'  // Each payment belongsTo a project
+        ])->where('supplier_id', $supplierId)->firstOrFail();
+
+        $name = $supplier; // Already fetched, no need for a separate query
+
+        return view('reports.purchaser-report', compact('name', 'supplier'));
     }
 }

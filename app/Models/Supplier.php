@@ -15,4 +15,19 @@ class Supplier extends Model
         'supplier_address',
         'note',
     ];
+
+    public function purchases()
+    {
+        return $this->hasMany(ProductPurchase::class, 'supplier_id');
+    }
+
+    public function flatsell()
+    {
+        return $this->hasMany(FlatSell::class, 'supplier_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(DebitCredits::class, 'supplier_id');
+    }
 }

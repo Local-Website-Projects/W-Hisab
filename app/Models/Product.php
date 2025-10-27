@@ -11,4 +11,13 @@ class Product extends Model
     protected $fillable = [
         'product_name'
     ];
+    public function purchases()
+    {
+        return $this->hasMany(ProductPurchase::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(DebitCredit::class);
+    }
 }

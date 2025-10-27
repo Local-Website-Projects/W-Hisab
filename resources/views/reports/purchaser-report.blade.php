@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Projectwise Cashbook Report</title>
+    <title>Purchaser Report</title>
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -21,20 +21,19 @@
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>
 </div>
 
-<h1 class="text-center mb-4" style="font-size: 20px !important;">Supplier: {{ $name->supplier_name }}</h1>
+<h1 class="text-center mb-4" style="font-size: 20px !important;">Purchaser: {{ $name->supplier_name }}</h1>
 
 <table class="table table-bordered mt-3">
     <thead>
     <tr class="text-center">
-        <th colspan="6">Purchase Order</th>
+        <th colspan="5">Flat Purchase</th>
         <th colspan="4">Paid Amounts</th>
     </tr>
     <tr>
         <th>Sl No</th>
         <th>Date</th>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
+        <th>Project Name</th>
+        <th>Note</th>
         <th>Total Price</th>
 
         <th>Sl No</th>
@@ -46,9 +45,8 @@
 
     <tbody>
     @php
-        $purchases = $supplier->purchases;
+        $purchases = $supplier->flatsell;
         $payments = $supplier->payments;
-
         $maxRows = max($purchases->count(), $payments->count());
     @endphp
 
@@ -57,57 +55,52 @@
             {{-- Purchases --}}
             @if(isset($purchases[$i]))
                 <td>{{ $i + 1 }}</td>
-                <td>{{ \Carbon\Carbon::parse($purchases[$i]->created_at)->format('d M, Y') }}</td>
-                <td>{{ $purchases[$i]->product->product_name ?? 'N/A' }}</td>
-                <td>{{ $purchases[$i]->quantity }} {{ $purchases[$i]->unit }}</td>
-                <td>{{ number_format($purchases[$i]->unit_price, 2) }}</td>
-                <td>{{ number_format($purchases[$i]->total_price, 2) }}</td>
+                <td>{{ \Carbon\Carbon::parse($purchases[$i]->date)->format('d M, Y') }}</td>
+                <td>{{ $purchases[$i]->project->project_name ?? 'N/A' }}</td>
+                <td>{{ $purchases[$i]->note ?? '—' }}</td>
+                <td>{{ number_format($purchases[$i]->total_amount, 2) }}</td>
             @else
-                <td colspan="6" class="text-center">—</td>
+                <td colspan="5" class="text-center">—</td>
             @endif
-
 
             {{-- Payments --}}
             @if(isset($payments[$i]))
                 <td>{{ $i + 1 }}</td>
                 <td>{{ \Carbon\Carbon::parse($payments[$i]->date)->format('d M, Y') }}</td>
-                <td>{{ $payments[$i]->note }}</td>
-                <td>{{ number_format($payments[$i]->debit, 2) }}</td>
+                <td>{{ $payments[$i]->note ?? '—' }}</td>
+                <td>{{ number_format($payments[$i]->credit, 2) }}</td>
             @else
                 <td colspan="4" class="text-center">—</td>
             @endif
         </tr>
     @endfor
 
-
     {{-- Total Row --}}
+    @php
+        $totalPurchase = $purchases->sum('total_amount');
+        $totalPaid = $payments->sum('credit');
+    @endphp
     <tr style="font-weight: bold; background:#e9ecef;">
-        <td colspan="5" class="text-right">
-            Total Purchases:
-        </td>
-        <td class="text-left">
-            {{ number_format($purchases->sum('total_price'), 2) }}
-        </td>
-        <td colspan="3" class="text-right">
-            Total Paid:
-        </td>
-        <td class="text-left">
-            {{ number_format($payments->sum('debit'), 2) }}
-        </td>
+        <td colspan="4" class="text-right">Total Purchases:</td>
+        <td>{{ number_format($totalPurchase, 2) }}</td>
+
+        <td colspan="3" class="text-right">Total Paid:</td>
+        <td>{{ number_format($totalPaid, 2) }}</td>
     </tr>
 
-    {{-- Profit/Loss Row --}}
-    @php
-        $totalPaid = $payments->sum('debit');
-        $totalPurchase = $purchases->sum('total_price');
-    @endphp
+    {{-- Remaining / Advance Row --}}
     <tr style="font-weight: bold; background:#d6ffd6;">
-        <td colspan="10" class="text-center">
-            {{ $totalPaid >= $totalPurchase ? 'Advance Payment to Supplier: ' : 'Payable to Supplier: ' }} {{ number_format(abs($totalPaid - $totalPurchase), 2) }}
+        <td colspan="9" class="text-center">
+            @if($totalPaid >= $totalPurchase)
+                Payable to Purchaser: {{ number_format($totalPaid - $totalPurchase, 2) }}
+            @else
+                Receivable from Purchaser: {{ number_format($totalPurchase - $totalPaid, 2) }}
+            @endif
         </td>
     </tr>
     </tbody>
 </table>
+
 
 <div class="no-print text-end mt-3">
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>

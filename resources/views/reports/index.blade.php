@@ -100,7 +100,7 @@
                     <div class="col-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Supplier Wise Cashbook Report</h4>
+                                <h4 class="card-title">Supplier Profile Report</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
@@ -114,6 +114,36 @@
                                                         <option disabled selected>Select Supplier</option>
                                                         @foreach($suppliers as $supplier)
                                                             <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 mt-4">
+                                                <button type="submit" class="btn btn-rounded btn-primary mb-2">Report</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Purchaser Profile Report</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form action="{{route('report.purchaser')}}" method="post" target="_blank">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="form-group">
+                                                    <label>Select Purchaser*</label>
+                                                    <select class="form-control form-control-lg default-select" name="supplier_id" required>
+                                                        <option disabled selected>Select Purchaser</option>
+                                                        @foreach($purchasers as $purchaser)
+                                                            <option value="{{$purchaser->supplier_id}}">{{$purchaser->supplier_name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

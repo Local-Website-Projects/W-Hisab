@@ -34,47 +34,58 @@
         <th>Product Name</th>
         <th>Supplier Name</th>
         <th>Note</th>
-        <th>Credit Amount</th>
-        <th>Debit Amount</th>
+        <th class="text-end">Credit Amount</th>
+        <th class="text-end">Debit Amount</th>
     </tr>
     </thead>
     <tbody>
     @php
-        $total_debit_amount = 0;
-        $total_credit_amount = 0;
+        // Use floats and ensure nulls become 0
+        $total_debit_amount = 0.0;
+        $total_credit_amount = 0.0;
     @endphp
-    <tr>
-        <td colspan="6" style="font-weight: bold;">Cash in Hand</td>
-        <td style="font-weight: bold;">{{$cashOnHand}}</td>
-        <td></td>
-    </tr>
+
     @forelse($cashbooks as $index => $cashbook)
+        @php
+            // make sure values are numeric
+            $credit = $cashbook->credit !== null ? (float) $cashbook->credit : 0.0;
+            $debit  = $cashbook->debit  !== null ? (float) $cashbook->debit  : 0.0;
+
+            $total_debit_amount  += $debit;
+            $total_credit_amount += $credit;
+        @endphp
+
         <tr>
             <td>{{ $index + 1 }}</td>
             <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d M, Y') }}</td>
-            <td>{{ $cashbook->project->project_name }}</td>
+            <td>{{ $cashbook->project->project_name ?? 'N/A' }}</td>
             <td>{{ optional($cashbook->product)->product_name ?? 'N/A' }}</td>
-            <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A'}}</td>
+            <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
             <td>{{ $cashbook->note }}</td>
-            <td>{{ $cashbook->credit }}</td>
-            <td>{{ $cashbook->debit }}</td>
-            @php
-                $total_debit_amount += $cashbook->debit;
-                $total_credit_amount += $cashbook->credit;
-            @endphp
+            <td class="text-end">{{ $credit ? number_format($credit, 2) : '' }}</td>
+            <td class="text-end">{{ $debit ? number_format($debit, 2) : '' }}</td>
         </tr>
     @empty
         <tr>
-            <td colspan="4" class="text-center">No data found for selected date range.</td>
+            <td colspan="8" class="text-center">No data found for selected date range.</td>
         </tr>
     @endforelse
+
+    {{-- Totals row: show only the summed credits & debits (do not add cashOnHand here) --}}
     <tr>
-        <td colspan="6" style="font-weight: bold;">Total</td>
-        <td style="font-weight: bold;">{{$total_credit_amount + $cashOnHand}}</td>
-        <td style="font-weight: bold;">{{$total_debit_amount}}</td>
+        <td colspan="6" style="font-weight: bold; text-align: right;">Total (Period)</td>
+        <td style="font-weight: bold; text-align: right;">{{ number_format($total_credit_amount, 2) }}</td>
+        <td style="font-weight: bold; text-align: right;">{{ number_format($total_debit_amount, 2) }}</td>
+    </tr>
+
+    {{-- Cash in Hand (closing) --}}
+    <tr>
+        <td colspan="7" style="font-weight: bold; text-align: right;">Cash in Hand</td>
+        <td style="font-weight: bold; text-align: right;">{{ number_format((float)$cashOnHand, 2) }}</td>
     </tr>
     </tbody>
 </table>
+
 
 <div class="no-print text-end mt-3">
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>

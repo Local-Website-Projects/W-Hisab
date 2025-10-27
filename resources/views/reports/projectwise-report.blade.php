@@ -28,8 +28,7 @@
     <tr>
         <th>#</th>
         <th>Product Name</th>
-        <th>Supplier Name</th>
-        <th>Note</th>
+        <th>Purchaser/Supplier Name</th>
         <th>Credit</th>
         <th>Debit</th>
     </tr>
@@ -44,7 +43,6 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ optional ($cashbook->product)->product_name ?? 'N/A' }}</td>
             <td>{{ optional ($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
-            <td>{{ $cashbook->note }}</td>
             <td>{{ $cashbook->total_credit }}</td>
             <td>{{ $cashbook->total_debit }}</td>
 
@@ -56,13 +54,21 @@
         </tr>
     @empty
         <tr>
-            <td colspan="4" class="text-center">No data found for selected date range.</td>
+            <td colspan="3" class="text-center">No data found for selected date range.</td>
         </tr>
     @endforelse
     <tr>
-        <td colspan="4">Total</td>
+        <td colspan="3" class="text-end font-weight-bold">Total</td>
         <td>{{$total_credit}}</td>
         <td>{{$total_debit}}</td>
+    </tr>
+    <tr>
+        <td colspan="4" class="text-end font-weight-bold">
+            {{ $total_credit >= $total_debit ? 'Profit' : 'Loss' }}
+        </td>
+        <td>
+            {{ abs($total_credit - $total_debit) }}
+        </td>
     </tr>
     </tbody>
 </table>
