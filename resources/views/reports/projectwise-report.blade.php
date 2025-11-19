@@ -21,16 +21,15 @@
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>
 </div>
 
-<h2 class="text-center mb-4">Project: {{ $project->project_name }}</h2>
+<h2 class="text-center mb-4">Project: {{$projectName }}</h2>
 
 <table class="table table-bordered mt-3">
     <thead class="table-dark">
     <tr>
         <th>#</th>
-        <th>Product Name</th>
         <th>Purchaser/Supplier Name</th>
-        <th>Credit</th>
-        <th>Debit</th>
+        <th>Credit (Payable)</th>
+        <th>Debit (Receivable)</th>
     </tr>
     </thead>
     <tbody>
@@ -38,40 +37,59 @@
         $total_debit = 0;
         $total_credit = 0;
     @endphp
-    @forelse($cashbooks as $index => $cashbook)
+
+    @forelse($balance_sheets as $index => $row)
         <tr>
             <td>{{ $index + 1 }}</td>
-            <td>{{ optional ($cashbook->product)->product_name ?? 'N/A' }}</td>
-            <td>{{ optional ($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
-            <td>{{ $cashbook->total_credit }}</td>
-            <td>{{ $cashbook->total_debit }}</td>
+
+            {{-- If you only have supplier_id --}}
+            <td>{{ $row['supplier_name'] }}</td>
+
+            <td>{{ number_format((float)$row['payable'], 0) }}</td>
+            <td>{{ number_format((float)$row['receivable'], 0) }}</td>
 
             @php
-                $total_debit += $cashbook->total_debit;
-                $total_credit += $cashbook->total_credit;
+                $total_credit += $row['payable'];     // credit column → payable
+                $total_debit  += $row['receivable'];  // debit column → receivable
             @endphp
-
         </tr>
     @empty
         <tr>
-            <td colspan="3" class="text-center">No data found for selected date range.</td>
+            <td colspan="4" class="text-center">No data found for selected date range.</td>
         </tr>
     @endforelse
     <tr>
-        <td colspan="3" class="text-end font-weight-bold">Total</td>
-        <td>{{$total_credit}}</td>
-        <td>{{$total_debit}}</td>
+        @if($total_debit > $total_credit)
+            @php $profit = $total_debit - $total_credit; @endphp
+            <td></td>
+            <td>Profit</td>
+            <td>{{ number_format((float)$profit, 0) }}</td>
+            <td></td>
+            @php $total_credit += $profit; @endphp
+
+        @elseif($total_debit < $total_credit)
+            @php $loss = $total_credit - $total_debit; @endphp
+            <td></td>
+            <td>Loss</td>
+            <td></td>
+            <td>{{ number_format((float)$loss, 0) }}</td>
+            @php $total_debit += $loss; @endphp
+
+        @else
+            <td></td>
+            <td>Profit/Loss</td>
+            <td>0</td>
+            <td>0</td>
+        @endif
     </tr>
-    <tr>
-        <td colspan="4" class="text-end font-weight-bold">
-            {{ $total_credit >= $total_debit ? 'Profit' : 'Loss' }}
-        </td>
-        <td>
-            {{ abs($total_credit - $total_debit) }}
-        </td>
+    <tr class="fw-bold">
+        <td colspan="2" class="text-end">Total:</td>
+        <td>{{ number_format((float)$total_credit, 0) }}</td>
+        <td>{{ number_format((float)$total_debit, 0) }}</td>
     </tr>
     </tbody>
 </table>
+
 
 <div class="no-print text-end mt-3">
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>

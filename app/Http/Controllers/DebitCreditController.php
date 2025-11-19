@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DebitCredits;
+use App\Models\FlatSell;
 use App\Models\Product;
+use App\Models\ProductPurchase;
 use App\Models\Project;
 use App\Models\Supplier;
 use Carbon\Carbon;
@@ -107,15 +109,58 @@ class DebitCreditController extends Controller
 
         $projectId = $request->input('project_id');
 
-        $cashbooks = DebitCredits::select('supplier_id','product_id')
-            ->selectRaw('SUM(debit) as total_debit')
-            ->selectRaw('SUM(credit) as total_credit')
-            ->where('project_id', $projectId)
-            ->groupBy('supplier_id','product_id')
-            ->with('supplier')
-            ->get();
-        $project = Project::where('project_id', $projectId)->first();
-        return view('reports.projectwise-report', compact('cashbooks','project'));
+        $projectName = Project::where('project_id', $projectId)->first()->project_name;
+
+        // Step 1: Fetch all grouped data
+        $purchases = ProductPurchase::where('project_id', $projectId)
+            ->selectRaw('supplier_id, SUM(total_price) as total_purchase')
+            ->groupBy('supplier_id')
+            ->get()
+            ->keyBy('supplier_id');
+
+        $sells = FlatSell::where('project_id', $projectId)
+            ->selectRaw('supplier_id, SUM(total_amount) as total_amount')
+            ->groupBy('supplier_id')
+            ->get()
+            ->keyBy('supplier_id');
+
+        $debitCredits = DebitCredits::where('project_id', $projectId)
+            ->selectRaw('supplier_id, SUM(credit) as total_credit, SUM(debit) as total_debit')
+            ->groupBy('supplier_id')
+            ->get()
+            ->keyBy('supplier_id');
+
+
+// Step 2: Get all unique supplier IDs
+        $supplierIds = $purchases->keys()
+            ->merge($sells->keys())
+            ->merge($debitCredits->keys())
+            ->unique();
+
+
+// Step 3: Prepare final report
+        $balance_sheets = $supplierIds->map(function ($id) use ($purchases, $sells, $debitCredits) {
+            $supplier = Supplier::find($id);
+            $purchase = $purchases[$id]->total_purchase ?? 0;
+            $sell     = $sells[$id]->total_amount ?? 0;
+            $credit   = $debitCredits[$id]->total_credit ?? 0;
+            $debit    = $debitCredits[$id]->total_debit ?? 0;
+
+            return [
+                'supplier_id'   => $id,
+                'supplier_name' => optional($supplier)->supplier_name ?? 'N/A',
+                'total_purchase'=> $purchase,
+                'total_sell'    => $sell,
+                'total_credit'  => $credit,
+                'total_debit'   => $debit,
+                // Payable = purchase - debit
+                'payable'       => $purchase - $debit,
+                // Receivable = sell - credit
+                'receivable'    => $sell - $credit,
+            ];
+        });
+
+        return view('reports.projectwise-report', compact('balance_sheets','projectName'));
     }
 
     public function supplierwiseReport(Request $request){
