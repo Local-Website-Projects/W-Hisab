@@ -31,7 +31,6 @@
         <th>#</th>
         <th>Date</th>
         <th>Project Name</th>
-        <th>Product Name</th>
         <th>Supplier Name</th>
         <th>Note</th>
         <th class="text-end">Credit Amount</th>
@@ -59,7 +58,6 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d M, Y') }}</td>
             <td>{{ $cashbook->project->project_name ?? 'N/A' }}</td>
-            <td>{{ optional($cashbook->product)->product_name ?? 'N/A' }}</td>
             <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
             <td>{{ $cashbook->note }}</td>
             <td class="text-end">{{ $credit ? number_format($credit, 2) : '' }}</td>
@@ -67,20 +65,20 @@
         </tr>
     @empty
         <tr>
-            <td colspan="8" class="text-center">No data found for selected date range.</td>
+            <td colspan="7" class="text-center">No data found for selected date range.</td>
         </tr>
     @endforelse
 
     {{-- Totals row: show only the summed credits & debits (do not add cashOnHand here) --}}
     <tr>
-        <td colspan="6" style="font-weight: bold; text-align: right;">Total (Period)</td>
+        <td colspan="5" style="font-weight: bold; text-align: right;">Total (Period)</td>
         <td style="font-weight: bold; text-align: right;">{{ number_format($total_credit_amount, 2) }}</td>
         <td style="font-weight: bold; text-align: right;">{{ number_format($total_debit_amount, 2) }}</td>
     </tr>
 
     {{-- Cash in Hand (closing) --}}
     <tr>
-        <td colspan="7" style="font-weight: bold; text-align: right;">Cash in Hand</td>
+        <td colspan="6" style="font-weight: bold; text-align: right;">Cash in Hand</td>
         <td style="font-weight: bold; text-align: right;">{{ number_format((float)$cashOnHand, 2) }}</td>
     </tr>
     </tbody>

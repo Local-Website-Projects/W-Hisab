@@ -17,7 +17,7 @@ class DebitCreditController extends Controller
         $projects = Project::where('status',1)->latest()->get();
         $suppliers = Supplier::latest()->get();
         $products = Product::latest()->get();
-        $cashbooks = DebitCredits::with('project','supplier','product')->latest()->paginate(20)->onEachSide(1);
+        $cashbooks = DebitCredits::with('project','supplier','product')->latest()->paginate(50)->onEachSide(1);
         $totalCredit = DebitCredits::sum('credit');
         $totalDebit = DebitCredits::sum('debit');
         $cashOnHand = $totalCredit - $totalDebit;
@@ -58,7 +58,8 @@ class DebitCreditController extends Controller
             'supplier_id' => 'required|exists:suppliers,supplier_id',
             'debit' => 'nullable|numeric|min:0',
             'credit' => 'nullable|numeric|min:0',
-            'note' => 'required|string'
+            'note' => 'required|string',
+            'date' => 'required|date'
         ]);
         $debitCredit->update($validated);
         return redirect()->route('cashbook.index')->with('success','Debit credit data updated successfully');

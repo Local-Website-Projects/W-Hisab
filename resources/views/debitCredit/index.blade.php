@@ -69,13 +69,13 @@
                                                         <div class="form-group">
                                                             <label>Select Project*</label>
                                                             <select class="form-control form-control-lg default-select" name="project_id" required>
-                                                                <option disabled selected>Select Project</option>
+                                                                <option disabled>Select Project</option>
                                                                 @foreach($projects as $project)
                                                                     <option value="{{$project->project_id}}">{{$project->project_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="form-group">
+                                                        {{--<div class="form-group">
                                                             <label>Select Product</label>
                                                             <select class="form-control form-control-lg default-select" name="product_id">
                                                                 <option value="" disabled selected>Select Product</option>
@@ -83,6 +83,10 @@
                                                                     <option value="{{$product->product_id}}">{{$product->product_name}}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </div>--}}
+                                                        <div class="form-group">
+                                                            <label>Date*</label>
+                                                            <input type="date" class="form-control input-default" name="date" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Select Supplier*</label>
@@ -93,10 +97,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label>Date*</label>
-                                                            <input type="date" class="form-control input-default" name="date" required>
-                                                        </div>
+
                                                         <div class="form-group">
                                                             <label>Amount*</label>
                                                             <input type="number" class="form-control input-default" name="credit" required>
@@ -139,13 +140,17 @@
                                                         <div class="form-group">
                                                             <label>Select Project*</label>
                                                             <select class="form-control form-control-lg default-select" name="project_id" required>
-                                                                <option disabled selected>Select Project</option>
+                                                                <option disabled>Select Project</option>
                                                                 @foreach($projects as $project)
                                                                     <option value="{{$project->project_id}}">{{$project->project_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
+                                                            <label>Date*</label>
+                                                            <input type="date" class="form-control input-default" name="date" required>
+                                                        </div>
+                                                        {{--<div class="form-group">
                                                             <label>Select Product</label>
                                                             <select class="form-control form-control-lg default-select" name="product_id" required>
                                                                 <option disabled selected>Select Product</option>
@@ -153,7 +158,7 @@
                                                                     <option value="{{$product->product_id}}">{{$product->product_name}}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>
+                                                        </div>--}}
                                                         <div class="form-group">
                                                             <label>Select Supplier</label>
                                                             <select class="form-control form-control-lg default-select" name="supplier_id" required>
@@ -162,10 +167,6 @@
                                                                     <option value="{{$supplier->supplier_id}}">{{$supplier->supplier_name}}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Date*</label>
-                                                            <input type="date" class="form-control input-default" name="date" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Amount*</label>
@@ -199,9 +200,9 @@
                                     <table class="table table-bordered table-responsive-md">
                                         <thead>
                                         <tr>
+                                            <th>Date</th>
                                             <th>Project Name</th>
                                             <th>Supplier Name</th>
-                                            <th>Product Name</th>
                                             <th>Note</th>
                                             <th>Credit</th>
                                             <th>Debit</th>
@@ -211,9 +212,9 @@
                                         <tbody>
                                         @foreach($cashbooks as $cashbook)
                                             <tr>
-                                                <td>{{$cashbook->project->project_name}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($cashbook->date)->format('d/m/y') }}</td>
+                                                <td>{{ optional($cashbook->project)->project_name ?? 'N/A'}}</td>
                                                 <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
-                                                <td>{{ optional($cashbook->product)->product_name ?? 'N/A'}}</td>
                                                 <td>{{$cashbook->note}}</td>
                                                 <td>{{$cashbook->credit}}</td>
                                                 <td>{{$cashbook->debit}}</td>

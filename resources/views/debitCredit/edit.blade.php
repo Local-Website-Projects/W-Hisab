@@ -68,6 +68,10 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label>Date*</label>
+                                            <input type="date" class="form-control input-default" name="date" value="{{$data->date}}" required>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Select Supplier*</label>
                                             <select class="form-control form-control-lg default-select" name="supplier_id" required>
                                                 <option disabled>Select Supplier</option>
@@ -90,7 +94,7 @@
                                         @endif
                                         <div class="form-group">
                                             <label>Note*</label>
-                                            <textarea class="form-control" rows="4" id="comment" name="note" value="{{$data->note}}" required></textarea>
+                                            <textarea class="form-control" rows="4" id="comment" name="note" required>{{$data->note}}</textarea>
                                         </div>
                                         <button type="submit" class="btn btn-rounded btn-outline-primary">Save</button>
                                     </form>
