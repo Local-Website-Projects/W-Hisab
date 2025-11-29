@@ -155,9 +155,9 @@ class DebitCreditController extends Controller
                 'total_credit'  => $credit,
                 'total_debit'   => $debit,
                 // Payable = purchase - debit
-                'payable'       => $purchase - $debit,
+                'payable'       => $debit - $purchase,
                 // Receivable = sell - credit
-                'receivable'    => $sell - $credit,
+                'receivable'    => $credit,
             ];
         });
 

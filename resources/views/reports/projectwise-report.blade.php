@@ -21,7 +21,7 @@
     <button onclick="window.print()" class="btn btn-primary">Print Report</button>
 </div>
 
-<h2 class="text-center mb-4">Project: {{$projectName }}</h2>
+<h2 class="text-center mb-4" style="font-size: 24px !important;">Project: {{$projectName }}</h2>
 
 <table class="table table-bordered mt-3">
     <thead class="table-dark">
@@ -45,8 +45,8 @@
             {{-- If you only have supplier_id --}}
             <td>{{ $row['supplier_name'] }}</td>
 
-            <td>{{ number_format((float)$row['payable'], 0) }}</td>
-            <td>{{ number_format((float)$row['receivable'], 0) }}</td>
+            <td>{{ formatBDT($row['payable'], 0) }}</td>
+            <td>{{ formatBDT($row['receivable'], 0) }}</td>
 
             @php
                 $total_credit += $row['payable'];     // credit column → payable
@@ -62,17 +62,17 @@
         @if($total_debit > $total_credit)
             @php $profit = $total_debit - $total_credit; @endphp
             <td></td>
-            <td>Profit</td>
-            <td>{{ number_format((float)$profit, 0) }}</td>
+            <td>Cash In Hand</td>
+            <td>{{ formatBDT($profit, 0) }}</td>
             <td></td>
             @php $total_credit += $profit; @endphp
 
         @elseif($total_debit < $total_credit)
             @php $loss = $total_credit - $total_debit; @endphp
             <td></td>
-            <td>Loss</td>
+            <td>Cash In Hand</td>
             <td></td>
-            <td>{{ number_format((float)$loss, 0) }}</td>
+            <td>{{ formatBDT($loss, 0) }}</td>
             @php $total_debit += $loss; @endphp
 
         @else
@@ -84,8 +84,8 @@
     </tr>
     <tr class="fw-bold">
         <td colspan="2" class="text-end">Total:</td>
-        <td>{{ number_format((float)$total_credit, 0) }}</td>
-        <td>{{ number_format((float)$total_debit, 0) }}</td>
+        <td>{{ formatBDT($total_credit, 0) }}</td>
+        <td>{{ formatBDT($total_debit, 0) }}</td>
     </tr>
     </tbody>
 </table>

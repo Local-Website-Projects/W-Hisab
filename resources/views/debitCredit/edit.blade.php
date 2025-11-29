@@ -76,7 +76,7 @@
                                             <select class="form-control form-control-lg default-select" name="supplier_id" required>
                                                 <option disabled>Select Supplier</option>
                                                 @foreach($suppliers as $supplier)
-                                                    <option value="{{$supplier->supplier_id}}" {{($data->supplier_id == $project->supplier_id) ? 'selected':''}}>{{$supplier->supplier_name}}</option>
+                                                    <option value="{{$supplier->supplier_id}}" {{($data->supplier_id == $supplier->supplier_id) ? 'selected':''}}>{{$supplier->supplier_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

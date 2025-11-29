@@ -38,6 +38,11 @@
     </tr>
     </thead>
     <tbody>
+    <tr>
+        <td colspan="5" style="font-weight: bold; text-align: right;">Previous Balance</td>
+        <td style="font-weight: bold; text-align: right;">{{ formatBDT($openingBalance) }}</td>
+        <td></td>
+    </tr>
     @php
         // Use floats and ensure nulls become 0
         $total_debit_amount = 0.0;
@@ -60,8 +65,8 @@
             <td>{{ $cashbook->project->project_name ?? 'N/A' }}</td>
             <td>{{ optional($cashbook->supplier)->supplier_name ?? 'N/A' }}</td>
             <td>{{ $cashbook->note }}</td>
-            <td class="text-end">{{ $credit ? number_format($credit, 2) : '' }}</td>
-            <td class="text-end">{{ $debit ? number_format($debit, 2) : '' }}</td>
+            <td class="text-end">{{ $credit ? formatBDT($credit) : '' }}</td>
+            <td class="text-end">{{ $debit ? formatBDT($debit) : '' }}</td>
         </tr>
     @empty
         <tr>
@@ -72,14 +77,14 @@
     {{-- Totals row: show only the summed credits & debits (do not add cashOnHand here) --}}
     <tr>
         <td colspan="5" style="font-weight: bold; text-align: right;">Total (Period)</td>
-        <td style="font-weight: bold; text-align: right;">{{ number_format($total_credit_amount, 2) }}</td>
-        <td style="font-weight: bold; text-align: right;">{{ number_format($total_debit_amount, 2) }}</td>
+        <td style="font-weight: bold; text-align: right;">{{ formatBDT($total_credit_amount + $openingBalance)  }}</td>
+        <td style="font-weight: bold; text-align: right;">{{ formatBDT($total_debit_amount) }}</td>
     </tr>
 
     {{-- Cash in Hand (closing) --}}
     <tr>
         <td colspan="6" style="font-weight: bold; text-align: right;">Cash in Hand</td>
-        <td style="font-weight: bold; text-align: right;">{{ number_format((float)$cashOnHand, 2) }}</td>
+        <td style="font-weight: bold; text-align: right;">{{ formatBDT($cashOnHand) }}</td>
     </tr>
     </tbody>
 </table>
