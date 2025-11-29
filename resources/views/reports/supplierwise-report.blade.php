@@ -60,8 +60,8 @@
                 <td>{{ \Carbon\Carbon::parse($purchases[$i]->created_at)->format('d M, Y') }}</td>
                 <td>{{ $purchases[$i]->product->product_name ?? 'N/A' }}</td>
                 <td>{{ $purchases[$i]->quantity }} {{ $purchases[$i]->unit }}</td>
-                <td>{{ number_format($purchases[$i]->unit_price, 2) }}</td>
-                <td>{{ number_format($purchases[$i]->total_price, 2) }}</td>
+                <td>{{ formatBDT($purchases[$i]->unit_price) }}</td>
+                <td>{{ formatBDT($purchases[$i]->total_price) }}</td>
             @else
                 <td colspan="6" class="text-center">—</td>
             @endif
@@ -72,7 +72,7 @@
                 <td>{{ $i + 1 }}</td>
                 <td>{{ \Carbon\Carbon::parse($payments[$i]->date)->format('d M, Y') }}</td>
                 <td>{{ $payments[$i]->note }}</td>
-                <td>{{ number_format($payments[$i]->debit, 2) }}</td>
+                <td>{{ formatBDT($payments[$i]->debit) }}</td>
             @else
                 <td colspan="4" class="text-center">—</td>
             @endif
@@ -86,13 +86,13 @@
             Total Purchases:
         </td>
         <td class="text-left">
-            {{ number_format($purchases->sum('total_price'), 2) }}
+            {{ formatBDT($purchases->sum('total_price')) }}
         </td>
         <td colspan="3" class="text-right">
             Total Paid:
         </td>
         <td class="text-left">
-            {{ number_format($payments->sum('debit'), 2) }}
+            {{ formatBDT($payments->sum('debit')) }}
         </td>
     </tr>
 
@@ -103,7 +103,7 @@
     @endphp
     <tr style="font-weight: bold; background:#d6ffd6;">
         <td colspan="10" class="text-center">
-            {{ $totalPaid >= $totalPurchase ? 'Advance Payment to Supplier: ' : 'Payable to Supplier: ' }} {{ number_format(abs($totalPaid - $totalPurchase), 2) }}
+            {{ $totalPaid >= $totalPurchase ? 'Advance Payment to Supplier: ' : 'Payable to Supplier: ' }} {{ formatBDT(abs($totalPaid - $totalPurchase)) }}
         </td>
     </tr>
     </tbody>

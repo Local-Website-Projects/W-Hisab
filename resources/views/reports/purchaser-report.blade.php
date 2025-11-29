@@ -58,7 +58,7 @@
                 <td>{{ \Carbon\Carbon::parse($purchases[$i]->date)->format('d M, Y') }}</td>
                 <td>{{ $purchases[$i]->project->project_name ?? 'N/A' }}</td>
                 <td>{{ $purchases[$i]->note ?? '—' }}</td>
-                <td>{{ number_format($purchases[$i]->total_amount, 2) }}</td>
+                <td>{{ formatBDT($purchases[$i]->total_amount) }}</td>
             @else
                 <td colspan="5" class="text-center">—</td>
             @endif
@@ -68,7 +68,7 @@
                 <td>{{ $i + 1 }}</td>
                 <td>{{ \Carbon\Carbon::parse($payments[$i]->date)->format('d M, Y') }}</td>
                 <td>{{ $payments[$i]->note ?? '—' }}</td>
-                <td>{{ number_format($payments[$i]->credit, 2) }}</td>
+                <td>{{ formatBDT($payments[$i]->credit) }}</td>
             @else
                 <td colspan="4" class="text-center">—</td>
             @endif
@@ -82,19 +82,19 @@
     @endphp
     <tr style="font-weight: bold; background:#e9ecef;">
         <td colspan="4" class="text-right">Total Purchases:</td>
-        <td>{{ number_format($totalPurchase, 2) }}</td>
+        <td>{{ formatBDT($totalPurchase) }}</td>
 
         <td colspan="3" class="text-right">Total Paid:</td>
-        <td>{{ number_format($totalPaid, 2) }}</td>
+        <td>{{ formatBDT($totalPaid) }}</td>
     </tr>
 
     {{-- Remaining / Advance Row --}}
     <tr style="font-weight: bold; background:#d6ffd6;">
         <td colspan="9" class="text-center">
             @if($totalPaid >= $totalPurchase)
-                Payable to Purchaser: {{ number_format($totalPaid - $totalPurchase, 2) }}
+                Payable to Purchaser: {{ formatBDT($totalPaid - $totalPurchase) }}
             @else
-                Receivable from Purchaser: {{ number_format($totalPurchase - $totalPaid, 2) }}
+                Receivable from Purchaser: {{ formatBDT($totalPurchase - $totalPaid) }}
             @endif
         </td>
     </tr>
